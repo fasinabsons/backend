@@ -34,8 +34,6 @@ Thumbs.db
 node_modules/
 
 # Build output directories
-dist/
-build/
 out/
 coverage/
 
