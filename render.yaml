@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: backend
+    env: node
+    build:
+      context: .
+      command: npm install && npm run build
+    start:
+      command: node server.js
+    envVars:
+      - key: MONGODB_URI
+        value: 'mongodb://172.16.33.22/LIVE_DB'
