@@ -1,3 +1,4 @@
+require('dotenv').config(); // ✅ Load environment variables from .env
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -15,21 +16,19 @@ const io = new Server(server, { cors: { origin: '*' } });
 app.use(cors());
 app.use(express.json({ limit: '1024mb' }));
 
-// ✅ MongoDB Connection
-mongoose.connect('mongodb://172.16.33.22/LIVE_DB')
-//mongoose.connect('mongodb://172.16.33.24/stagingDB')
+// ✅ MongoDB Connection using environment variable
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ Connected to MongoDB'))
   .catch(err => {
     console.error('❌ Error connecting to MongoDB:', err.message);
     process.exit(1);
   });
 
-// ✅ Directories
-
-const LOCAL_DATA_PATH = 'C:\\Users\\Lenovo\\Music\\C\\b\\local-data';
-const CHANGE_DATA_PATH = 'C:\\Users\\Lenovo\\Music\\C\\b\\change-data';
-const SAVE_FOLDER = 'C:\\Users\\Lenovo\\Music\\C\\save';
-const logpath = 'C:\\Users\\Lenovo\\Music\\C\\systemlogs'
+// ✅ Directories from environment variables
+const LOCAL_DATA_PATH = process.env.LOCAL_DATA_PATH;
+const CHANGE_DATA_PATH = process.env.CHANGE_DATA_PATH;
+const SAVE_FOLDER = process.env.SAVE_FOLDER;
+const LOG_PATH = process.env.LOG_PATH;
 
 const logDatabaseAction = (collectionName, action, documentId = null, details = {}) => {
   const logData = {
@@ -306,7 +305,7 @@ app.post('/set-alert', (req, res) => {
 // =========================
 // ✅ Start Server
 // =========================
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
