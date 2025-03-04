@@ -39,6 +39,7 @@ directories.forEach(dir => {
     }
 });
 
+
 const logDatabaseAction = (collectionName, action, documentId = null, details = {}) => {
   const logData = {
     timestamp: new Date().toISOString(),
@@ -130,7 +131,7 @@ setInterval(async () => {
     const data = await mongoose.connection.collection(col.name).find().limit(10).toArray();
     io.emit('realTimeData', { collection: col.name, data });
   });
-}, 30000); // Every 30 seconds
+}, 300000); // Every 3 minutes
 
 // ✅ Collection Operations
 app.get('/fetch-collection/:collectionName', async (req, res) => {
