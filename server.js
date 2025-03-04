@@ -24,11 +24,20 @@ mongoose.connect(process.env.MONGO_URI)
     process.exit(1);
   });
 
-// ✅ Directories from environment variables
-const LOCAL_DATA_PATH = process.env.LOCAL_DATA_PATH;
-const CHANGE_DATA_PATH = process.env.CHANGE_DATA_PATH;
-const SAVE_FOLDER = process.env.SAVE_FOLDER;
-const LOG_PATH = process.env.LOG_PATH;
+// Ensure directories exist
+const directories = [
+    process.env.LOCAL_DATA_PATH,
+    process.env.CHANGE_DATA_PATH,
+    process.env.SAVE_FOLDER,
+    process.env.LOG_PATH
+];
+
+directories.forEach(dir => {
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+        console.log(`Created directory: ${dir}`);
+    }
+});
 
 const logDatabaseAction = (collectionName, action, documentId = null, details = {}) => {
   const logData = {
